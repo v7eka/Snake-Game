@@ -2,18 +2,37 @@
 <html>
 <head>
 	<title>snake-apple-game</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+	<style>
+		@font-face {
+			font-family: 'Press Start 2P';
+			src: local('Press Start 2P'), url('https://github.com/google/fonts/blob/master/ofl/pressstart2p/PressStart2P-Regular.ttf') format('ttf');
+		}
+		canvas{border: black solid 2px;}
+	</style>
 </head>
 <body>
-<canvas id="game"></canvas>
+	
+	<object data="music/music.wav" type="video/quicktime" width="0" height="0">
+    	<param name="filename" value="music/music.wav">
+    	<param name="autostart" value="1">
+    	<param name="playcount" value="true"> 
+	</object>
+	
+	<canvas id="game">
+		Your browser does not support the CANVAS, so no game for you.
+	</canvas>
+	
+	<!--<script src="js/logic.js"></script>-->
+	<script src="js/music.js"></script>
+	<script src="js/grid.js"></script>
+	<script src="js/object.js"></script>
+	<script src="js/storage.js"></script>
+	<script src="js/control.js"></script>
+	<script src="js/render.js"></script>
+	<script src="js/game.js"></script>
+	<script src="js/main.js"></script>
+
 </body>
-<style>
-	canvas{border: black solid 2px;}
-</style>
-<!--<script src="js/logic.js"></script>-->
-<script src="js/grid.js"></script>
-<script src="js/object.js"></script>
-<script src="js/control.js"></script>
-<script src="js/render.js"></script>
-<script src="js/game.js"></script>
-<script src="js/main.js"></script>
 </html>

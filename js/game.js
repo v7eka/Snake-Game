@@ -1,62 +1,92 @@
 function Game(size, unit, ctx, clock){
-	//state has object(s)
+	var self = this;
+	
+	//state has object(s)	
 	this.state = {
+		//fixed entity
 		'snake': new Snake(),
-		'wall': new Wall(),
+		'boundry': new Boundry(),
+		
+		//variable entity
 		'apple': false,
 		'bigApple': false,
-		'poison': false
+		'poison': false,
+		
+		//last eaten food
+		'food': false
 	};
 	
 	this.scoore = new Scoore();
 	
 	this.clock = clock;
-	this.grid = new Grid(size, unit);
+	
+	this.grid = new Grid(size);
 	
 	this.control = new Control(this.grid, this.state, this.scoore);	
 	this.render = new Render(this.grid, unit, ctx);
-
+	
+	this.pauseState = false;
+	this. keyboard = window.addEventListener("keydown", function(e){
+		if (e.keyCode == '32') { self.pauseState = (!self.pauseState); self.pause(self.pauseState);}
+	}, false);
+	
+	
+	///////////////////
+	// DO IT !!
+	//this.music
+	//////////////////
 }
 
 Game.prototype.init = function(){
-	//set grid (snake only)
 	var self = this;
-	
-	/*///////////////////////////
-	
-	REFORM INSERTION INTO GRID OF OBJECT METHOD
-	
-	///////////////////////////*/
+
 	this.state.snake.scales.forEach(function(scale){
-		console.log(scale);
-		self.grid.set(self.state.snake.id, scale)
+		self.grid.set(scale);
 	});
-	self.grid.set("apple", new Vector(0, 3));
 	
-	/////////////////////////////////
-	// SET WALL IN GRID
-	///////////////////////////////////
+	this.state.boundry.walls.forEach(function(wall){
+		self.grid.set(wall);
+	});
+	
+	this.render.instruction();
 }
 
-Game.prototype.start = function(){
-	this.init();
+Game.prototype.run = function(){
+	this.render.update();
 	
-	console.log(this);	
 	var self = this;	
 	this.interval = setInterval(function(){self.update()}, this.clock);
 }
 
 Game.prototype.update = function(){
-	this.control.update();
+	var state = this.control.update();
 	this.render.update();
+	this.render.scoore(this.scoore.getTotalScoore());
 	
-	//this.score.update();
+	if(state == 'over'){
+		this.over();		
+	}else if(state == 'win'){
+		this.win();
+	}
 }
 
-Game.prototype.pause = function(){
-	//pause the this.interval
+Game.prototype.pause = function(state){
+	var self = this;
+	
+	if(state){
+		clearInterval(this.interval);
+	}else{
+		this.interval = setInterval(function(){self.update()}, this.clock);
+	}
+	this.render.pause();
 }
 
-function Scoore(){
-	// storage
+Game.prototype.over = function(){
+	clearInterval(this.interval);
+	this.render.gameOver();
+}
+
+Game.prototype.win = function(){
+	clearInterval(this.interval);
+	this.render.gameWin();
 }

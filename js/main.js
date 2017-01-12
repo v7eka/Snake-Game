@@ -1,8 +1,8 @@
-function attribute(unit, size, zoom, clock){
-   return { 'unit' : unit||15 ,
-   			'size' : size||900, 
-   			'zoom': zoom||0.5, 
-   			'clock' : clock||1000 
+function attribute(){
+	return { 'unit' : 30 ,
+			'size' : 900, 
+   			'zoom': 0.5, 
+   			'clock' : 200,
    			};
 }
 
@@ -14,15 +14,20 @@ function main(){
 	var unit = attribute().unit, 
 		size = attribute().size /*30px X 30px*/, 
 		clock = attribute().clock,
-		zoom = attribute().zoom;
+		zoom = attribute().zoom,
+		
+		actualSize = size * zoom,
+		actualUnit = unit * zoom;
 	
-
-	canvas.width = size * zoom;
-	canvas.height = size * zoom;
+	canvas.width = actualSize;
+	canvas.height = actualSize;
 	
-	var game = new Game(size, unit, ctx, clock);	
+	var game = new Game(actualSize, actualUnit, ctx, clock);	
+	game.init();
 	
-	game.start();
+	var keyboard = window.addEventListener("keydown", function(e){
+		if (e.keyCode == '13') { game.run();}
+	}, false);
 }
 
 window.onload = main;
